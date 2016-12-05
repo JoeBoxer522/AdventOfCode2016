@@ -19,7 +19,7 @@ public:
 
 	Vector2D operator-(const Vector2D& v) const
 	{
-		return(Vector2D(x + v.x, y + v.y));
+		return(Vector2D(x - v.x, y - v.y));
 	}
 
 	Vector2D operator+(const Vector2D& v) const
@@ -39,14 +39,14 @@ public:
 		return(Vector2D(x * magnitude, y * magnitude));
 	}
 
-	Vector2D operator*(const float magnitude) const
-	{
-		return(Vector2D(int(float(x) * magnitude), int(float(y) * magnitude)));
-	}
-
 	bool operator==(const Vector2D& v) const
 	{
 		return(x == v.x && y == v.y);
+	}
+
+	bool operator!=(const Vector2D& v) const
+	{
+		return(x != v.x || y != v.y);
 	}
 
 	void RotateByDegrees(double degrees)
@@ -71,12 +71,16 @@ public:
 	{
 		return(v1 - v2).Length();
 	}
+};
 
-	int Cross(const Vector2D& v1, const Vector2D& v2)
-	{
-		//U x V = Ux*Vy-Uy*Vx
-		return((v1.x * v2.y) - (v1.y * v2.x));
-	}
+Vector2D operator*(const float magnitude, const Vector2D v)
+{
+	return(Vector2D(int(float(v.x) * magnitude), int(float(v.y) * magnitude)));
+};
+
+Vector2D operator*(const Vector2D v, const float magnitude)
+{
+	return(Vector2D(int(float(v.x) * magnitude), int(float(v.y) * magnitude)));
 };
 
 #endif // VECTOR2D_H

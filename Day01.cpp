@@ -1,5 +1,6 @@
 #include "stdafx.h"
 
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -40,7 +41,7 @@ float Signed2DTriArea(const Vector2D& a, const Vector2D& b, const Vector2D& c)
 	return float((a.x - c.x) * (b.y - c.y) - (a.y - c.y) * (b.x - c.x));
 }
 
-bool Test2DSegmentSegment(const Vector2D& a, const Vector2D& b, const Vector2D& c, const Vector2D& d, float &t, Vector2D& p)
+bool Test2DSegment(const Vector2D& a, const Vector2D& b, const Vector2D& c, const Vector2D& d, float &t, Vector2D& p)
 {
 	// signs of areas correspond to which side of ab points c and d are
 	float a1 = Signed2DTriArea(a, b, d); // Compute winding of abd (+ or -)
@@ -57,7 +58,7 @@ bool Test2DSegmentSegment(const Vector2D& a, const Vector2D& b, const Vector2D& 
 		{
 			// Segments intersect. Find intersection point along L(t) = a + t * (b - a).
 			t = a3 / (a3 - a4);
-			p = a + ((b - a) * t); // the point of intersection
+			p = a + t * (b - a); // the point of intersection
 			return(true);
 		}
 	}
@@ -124,25 +125,52 @@ void Day01::RunPart2(const int& argc, const char* argv[])
 			{
 				facing.RotateByDegrees(90.0);
 			}
+
+			// Brute force
+// 			Vector2D dest = current + (facing * dist);
+// 			while(current != dest)
+// 			{
+// 				current += facing;
+// 				if(find(visited.begin(), visited.end(), current) == visited.end())
+// 				{
+// 					visited.push_back(current);
+// 				}
+// 				else
+// 				{
+// 					printf("\nFirst intersect at (%i, %i)\n", current.x, current.y);
+// 					printf("\nTotal Blocks: %i\n", abs(current.x) + abs(current.y));
+// 					// -6, 130
+// 					// 136 blocks
+// 					return;
+// 				}
+// 			}
+
+			// Line intersect
 			current += (facing * dist);
 			if(visited.size() > 2)
 			{
-				const Vector2D& testA = visited.at(visited.size() - 1);
-				const Vector2D& testB = current;
+				const size_t lastIdx = visited.size() - 1;
+				const Vector2D& currentA = visited.at(lastIdx);
+				const Vector2D& currentB = current;
+				float t = 0.0f;
+				Vector2D intersection = Vector2D();
 
-				for(size_t j = 0; j < visited.size()-1; ++j)
+				// Test last created line segment against every other segment in the sequence
+				for(size_t j = 0; j < lastIdx-1; ++j)
 				{
-					float t = 0.0f;
-					Vector2D intersect = Vector2D();
-					if(Test2DSegmentSegment(visited.at(j), visited.at(j+1), testA, testB, t, intersect))
+					const Vector2D& TestA = visited.at(j);
+					const Vector2D& TestB = visited.at(j+1);
+					
+					if(Test2DSegment(TestA, TestB, currentA, currentB, t, intersection))
 					{
-						printf("\nFirst intersect at (%i, %i)\n", intersect.x, intersect.y);
-						printf("\nTotal Blocks: %i\n", abs(intersect.x) + abs(intersect.y));
+						printf("\nFirst intersect at (%i, %i)\n", intersection.x, intersection.y);
+						printf("\nTotal Blocks: %i\n", abs(intersection.x) + abs(intersection.y));
+						// -6, 130
+						// 136 blocks
 						return;
 					}
 				}
 			}
-			
 			visited.push_back(current);
 		}		
 	}
