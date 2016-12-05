@@ -27,6 +27,8 @@ AdventOfCode2016.cpp
 /////////////////////////////////////////////////////////////////////////////
 Other standard files:
 
+test
+
 StdAfx.h, StdAfx.cpp
     These files are used to build a precompiled header (PCH) file
     named AdventOfCode2016.pch and a precompiled types file named StdAfx.obj.
