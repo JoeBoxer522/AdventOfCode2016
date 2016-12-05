@@ -1,6 +1,10 @@
 #ifndef DAYS_H
 #define DAYS_H
 
+#include <fstream>
+#include <iostream>
+#include <string>
+
 using namespace std;
 
 class Day
@@ -18,6 +22,13 @@ public:
 };
 
 class Day02 : public Day
+{
+public:
+    virtual void RunPart1();
+    virtual void RunPart2();
+};
+
+class Day03 : public Day
 {
 public:
     virtual void RunPart1();

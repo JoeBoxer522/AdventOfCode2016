@@ -90,8 +90,12 @@
     <ClCompile Include="Source\AdventOfCode2016.cpp" />
     <ClCompile Include="Source\Day01.cpp" />
     <ClCompile Include="Source\Day02.cpp" />
+    <ClCompile Include="Source\Day03.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Input\Day01.txt" />
+    <Text Include="Input\Day02.txt" />
+    <Text Include="Input\Day03.txt" />
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
