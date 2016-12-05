@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -6,30 +7,28 @@
 #include "Days.h"
 #include "Vector2D.h"
 
-bool GetDirDist(const char* arg, char& dir, int& dist)
+bool GetDirDist(const string arg, char& dir, int& dist)
 {
-	const string argStr = string(arg);
-	if(argStr.length() > 1)
-	{
-		dir = argStr[0];
-		int start = 1;
-		int end = argStr.find(',');
-		if(end == -1)
-		{
-			end = argStr.length() - 1;
-		}
-		string subStr = argStr.substr(start, end);
-		try
-		{
-			dist = stoi(subStr);
-		}
-		catch(...)
-		{
-			cout << "Error: Unable to convert \"" << subStr << "\" to int\n";
-			return(false);
-		}
+    size_t i = 0;
+    while(i < arg.length() - 1)
+    {
+		dir = arg[i];
+        ++i;
+        if(dir == 'L' || dir == 'R')
+        {
+            string subStr = arg.substr(i);
+            try
+            {
+                dist = stoi(subStr);
+                return(true);
+            }
+            catch(...)
+            {
+                cout << "Error: Unable to convert \"" << subStr << "\" to int\n";
+            }
+        }
 	}
-	return(true);
+    return(false);
 }
 
 float Signed2DTriArea(const Vector2D& a, const Vector2D& b, const Vector2D& c)
@@ -63,7 +62,7 @@ bool Test2DSegment(const Vector2D& a, const Vector2D& b, const Vector2D& c, cons
 	return(false);
 }
 
-void Day01::RunPart1(const int& argc, const char* argv[])
+void Day01::RunPart1()
 {
 	//L3, R2, L5, R1, L1, L2, L2, R1, R5, R1, L1, L2, R2, R4, L4, L3, L3, R5, L1, R3, L5, L2, R4, L5, R4, R2, L2, L1, R1, L3, L3, R2, R1, L4, L1, L1, R4, R5, R1, L2, L1, R188, R4, L3, R54, L4, R4, R74, R2, L4, R185, R1, R3, R5, L2, L3, R1, L1, L3, R3, R2, L3, L4, R1, L3, L5, L2, R2, L1, R2, R1, L4, R5, R4, L5, L5, L4, R5, R4, L5, L3, R4, R1, L5, L4, L3, R5, L5, L2, L4, R4, R4, R2, L1, L3, L2, R5, R4, L5, R1, R2, R5, L2, R4, R5, L2, L3, R3, L4, R3, L2, R1, R4, L5, R1, L5, L3, R4, L2, L2, L5, L5, R5, R2, L5, R1, L3, L2, L2, R3, L3, L4, R2, R3, L1, R2, L5, L3, R4, L4, R4, R3, L3, R1, L3, R5, L5, R1, R5, R3, L1
 
@@ -75,11 +74,13 @@ void Day01::RunPart1(const int& argc, const char* argv[])
 	Vector2D current(0, 0);
 	Vector2D facing(0, -1);
 
-	for(int i = 1; i < argc; ++i)
+    ifstream file("Input/Day01.txt");
+    string arg;
+    while(getline(file, arg, ','))
 	{
 		char dir = ' ';
 		int dist = 0;
-		if(GetDirDist(argv[i], dir, dist))
+		if(GetDirDist(arg, dir, dist))
 		{
 			if(dir == 'L')
 			{
@@ -98,7 +99,7 @@ void Day01::RunPart1(const int& argc, const char* argv[])
     printf("\nTotal Blocks: %i\n", abs(current.x) + abs(current.y));
 }
 
-void Day01::RunPart2(const int& argc, const char* argv[])
+void Day01::RunPart2()
 {
 	//L3, R2, L5, R1, L1, L2, L2, R1, R5, R1, L1, L2, R2, R4, L4, L3, L3, R5, L1, R3, L5, L2, R4, L5, R4, R2, L2, L1, R1, L3, L3, R2, R1, L4, L1, L1, R4, R5, R1, L2, L1, R188, R4, L3, R54, L4, R4, R74, R2, L4, R185, R1, R3, R5, L2, L3, R1, L1, L3, R3, R2, L3, L4, R1, L3, L5, L2, R2, L1, R2, R1, L4, R5, R4, L5, L5, L4, R5, R4, L5, L3, R4, R1, L5, L4, L3, R5, L5, L2, L4, R4, R4, R2, L1, L3, L2, R5, R4, L5, R1, R2, R5, L2, R4, R5, L2, L3, R3, L4, R3, L2, R1, R4, L5, R1, L5, L3, R4, L2, L2, L5, L5, R5, R2, L5, R1, L3, L2, L2, R3, L3, L4, R2, R3, L1, R2, L5, L3, R4, L4, R4, R3, L3, R1, L3, R5, L5, R1, R5, R3, L1
 
@@ -109,11 +110,14 @@ void Day01::RunPart2(const int& argc, const char* argv[])
 
 	vector<Vector2D> visited = vector<Vector2D>();
 	visited.push_back(current);
-    for(int i = 1; i < argc && !foundIntersect; ++i)
+
+    ifstream file("Input/Day01.txt");
+    string arg;
+    while(getline(file, arg, ',') && !foundIntersect)
 	{
 		char dir = ' ';
 		int dist = 0;
-		if(GetDirDist(argv[i], dir, dist))
+		if(GetDirDist(arg, dir, dist))
 		{
 			if(dir == 'L')
 			{

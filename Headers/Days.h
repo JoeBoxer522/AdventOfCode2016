@@ -6,22 +6,22 @@ using namespace std;
 class Day
 {
 public:
-	virtual void RunPart1(const int& argc, const char* argv[]) = 0;
-	virtual void RunPart2(const int& argc, const char* argv[]) = 0;
+	virtual void RunPart1() = 0;
+	virtual void RunPart2() = 0;
 };
 
 class Day01 : public Day
 {
 public:
-    virtual void RunPart1(const int& argc, const char* argv[]);
-    virtual void RunPart2(const int& argc, const char* argv[]);
+    virtual void RunPart1();
+    virtual void RunPart2();
 };
 
 class Day02 : public Day
 {
 public:
-    virtual void RunPart1(const int& argc, const char* argv[]);
-    virtual void RunPart2(const int& argc, const char* argv[]);
+    virtual void RunPart1();
+    virtual void RunPart2();
 };
 
 #endif // DAYS_H

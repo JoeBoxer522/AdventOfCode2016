@@ -21,7 +21,7 @@ static const char NUM_PAD[MAX_NUMPAD][MAX_NUMPAD] = { { '1','4','7' },{ '2','5',
 static const int MAX_NUMPADWEIRD = 5;
 static const char NUM_PAD_WEIRD[MAX_NUMPADWEIRD][MAX_NUMPADWEIRD] = { { ' ',' ','5',' ',' ' },{ ' ','2','6','A',' ' },{ '1','3','7','B','D' },{ ' ','4','8','C',' ' },{ ' ',' ','9',' ',' ' } };
 
-void Day02::RunPart1(const int& argc, const char* argv[])
+void Day02::RunPart1()
 {
     // ULL
     // RRDDD
@@ -33,7 +33,7 @@ void Day02::RunPart1(const int& argc, const char* argv[])
     int y = 1;
     
     cout << "\nThe part 1 bathroom code is: ";
-    ifstream file("Input_Day2.txt");
+    ifstream file("Input/Day02.txt");
     string arg;
     while(getline(file, arg))
     {
@@ -77,7 +77,7 @@ bool TestNumPadWeird(int x, int y)
     return(true);
 }
 
-void Day02::RunPart2(const int& argc, const char* argv[])
+void Day02::RunPart2()
 {
     // ULL
     // RRDDD
@@ -89,7 +89,7 @@ void Day02::RunPart2(const int& argc, const char* argv[])
     int y = 2;
 
     cout << "\nThe part 2 bathroom code is: ";
-    ifstream file("Input_Day2.txt");
+    ifstream file("Input/Day02.txt");
     string arg;
     while(getline(file, arg))
     {
