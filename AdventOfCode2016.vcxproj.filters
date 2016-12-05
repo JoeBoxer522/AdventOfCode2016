@@ -15,31 +15,25 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\..\..\Joey%27s Stuff\Code\AdventOfCode2016\AdventOfCode2016\ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\..\Joey%27s Stuff\Code\AdventOfCode2016\AdventOfCode2016\stdafx.h">
+    <ClInclude Include="Headers\Days.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Vector2D.h">
+    <ClInclude Include="Headers\Vector2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Math.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Days.h">
+    <ClInclude Include="Headers\AdventMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Joey%27s Stuff\Code\AdventOfCode2016\AdventOfCode2016\stdafx.cpp">
+    <ClCompile Include="Source\AdventOfCode2016.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Joey%27s Stuff\Code\AdventOfCode2016\AdventOfCode2016\AdventOfCode2016.cpp">
+    <ClCompile Include="Source\Day01.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Joey%27s Stuff\Code\AdventOfCode2016\AdventOfCode2016\Day01.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
   </ItemGroup>
 </Project>

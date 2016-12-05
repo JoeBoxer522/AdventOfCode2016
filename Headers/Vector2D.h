@@ -1,7 +1,7 @@
 #ifndef VECTOR2D_H
 #define VECTOR2D_H
 
-#include "Math.h"
+#include "AdventMath.h"
 
 class Vector2D {
 public:

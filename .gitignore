@@ -59,6 +59,10 @@ ipch/
 *.vsp
 *.vspx
 
+# VS2015 stuff
+*.VC.opendb
+*.VC.db
+
 # Guidance Automation Toolkit
 *.gpState
 

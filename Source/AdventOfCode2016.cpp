@@ -1,7 +1,6 @@
 // AdventOfCode2016.cpp
 //
 
-#include "stdafx.h"
 #include "Days.h"
 
 int main(int argc, const char* argv[])

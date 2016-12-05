@@ -1,5 +1,3 @@
-#include "stdafx.h"
-
 #include <algorithm>
 #include <iostream>
 #include <string>
@@ -79,7 +77,7 @@ void Day01::RunPart1(const int& argc, const char* argv[])
 	Vector2D current(0, 0);
 	Vector2D facing(0, -1);
 
-	for(int i = 0; i < argc; ++i)
+	for(int i = 1; i < argc; ++i)
 	{
 		char dir = ' ';
 		int dist = 0;
@@ -98,8 +96,8 @@ void Day01::RunPart1(const int& argc, const char* argv[])
 		}
 	}
 
-	cout << "\nTotal Dist: " << current.Length() << "\n";
-	cout << "Total Blocks: " << abs(current.x) + abs(current.y) << "\n";
+    printf("\nTotal Dist: %f", current.Length());
+    printf("\nTotal Blocks: %i\n", abs(current.x) + abs(current.y));
 }
 
 void Day01::RunPart2(const int& argc, const char* argv[])
@@ -108,10 +106,12 @@ void Day01::RunPart2(const int& argc, const char* argv[])
 
 	Vector2D current(0, 0);
 	Vector2D facing(0, -1);
+    Vector2D intersection(0, 0);
+    bool foundIntersect = false;
 
 	vector<Vector2D> visited = vector<Vector2D>();
 	visited.push_back(current);
-	for(int i = 0; i < argc; ++i)
+    for(int i = 1; i < argc && !foundIntersect; ++i)
 	{
 		char dir = ' ';
 		int dist = 0;
@@ -125,7 +125,7 @@ void Day01::RunPart2(const int& argc, const char* argv[])
 			{
 				facing.RotateByDegrees(90.0);
 			}
-
+            
 			// Brute force
 // 			Vector2D dest = current + (facing * dist);
 // 			while(current != dest)
@@ -137,11 +137,10 @@ void Day01::RunPart2(const int& argc, const char* argv[])
 // 				}
 // 				else
 // 				{
-// 					printf("\nFirst intersect at (%i, %i)\n", current.x, current.y);
-// 					printf("\nTotal Blocks: %i\n", abs(current.x) + abs(current.y));
 // 					// -6, 130
 // 					// 136 blocks
-// 					return;
+//                     intersection = current;
+//                     foundIntersect = true;
 // 				}
 // 			}
 
@@ -153,7 +152,6 @@ void Day01::RunPart2(const int& argc, const char* argv[])
 				const Vector2D& currentA = visited.at(lastIdx);
 				const Vector2D& currentB = current;
 				float t = 0.0f;
-				Vector2D intersection = Vector2D();
 
 				// Test last created line segment against every other segment in the sequence
 				for(size_t j = 0; j < lastIdx-1; ++j)
@@ -163,15 +161,16 @@ void Day01::RunPart2(const int& argc, const char* argv[])
 					
 					if(Test2DSegment(TestA, TestB, currentA, currentB, t, intersection))
 					{
-						printf("\nFirst intersect at (%i, %i)\n", intersection.x, intersection.y);
-						printf("\nTotal Blocks: %i\n", abs(intersection.x) + abs(intersection.y));
 						// -6, 130
 						// 136 blocks
-						return;
+                        foundIntersect = true;
 					}
 				}
 			}
 			visited.push_back(current);
-		}		
+		}
 	}
+
+    printf("\nFirst intersect at (%i, %i)", intersection.x, intersection.y);
+    printf("\nTotal Blocks: %i", abs(intersection.x) + abs(intersection.y));
 }
