@@ -5,10 +5,10 @@
 
 int main(int argc, const char* argv[])
 {
-	Day* day01 = new Day01();
-	day01->RunPart1(argc, argv);
-	day01->RunPart2(argc, argv);
-	delete day01;
+	Day* day = new Day02();
+	day->RunPart1(argc, argv);
+	day->RunPart2(argc, argv);
+	delete day;
 
 	return 0;
 }

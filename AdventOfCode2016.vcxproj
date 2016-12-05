@@ -89,6 +89,7 @@
   <ItemGroup>
     <ClCompile Include="Source\AdventOfCode2016.cpp" />
     <ClCompile Include="Source\Day01.cpp" />
+    <ClCompile Include="Source\Day02.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

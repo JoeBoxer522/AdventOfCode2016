@@ -6,8 +6,6 @@
 #include "Days.h"
 #include "Vector2D.h"
 
-using namespace std;
-
 bool GetDirDist(const char* arg, char& dir, int& dist)
 {
 	const string argStr = string(arg);
