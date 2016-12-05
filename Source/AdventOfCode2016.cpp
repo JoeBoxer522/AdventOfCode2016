@@ -5,7 +5,7 @@
 
 int main(int argc, const char* argv[])
 {
-	Day* day = new Day03();
+	Day* day = new Day04();
 	day->RunPart1();
 	day->RunPart2();
 	delete day;

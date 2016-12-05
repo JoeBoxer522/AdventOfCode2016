@@ -41,6 +41,9 @@
     <ClCompile Include="Source\Day03.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Day04.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -51,6 +54,9 @@
       <Filter>Input</Filter>
     </Text>
     <Text Include="Input\Day03.txt">
+      <Filter>Input</Filter>
+    </Text>
+    <Text Include="Input\Day04.txt">
       <Filter>Input</Filter>
     </Text>
   </ItemGroup>
