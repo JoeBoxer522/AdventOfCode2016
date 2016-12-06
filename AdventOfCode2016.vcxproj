@@ -94,12 +94,14 @@
     <ClCompile Include="Source\Day03.cpp" />
     <ClCompile Include="Source\Day04.cpp" />
     <ClCompile Include="Source\Day05.cpp" />
+    <ClCompile Include="Source\Day06.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Input\Day01.txt" />
     <Text Include="Input\Day02.txt" />
     <Text Include="Input\Day03.txt" />
     <Text Include="Input\Day04.txt" />
+    <Text Include="Input\Day06.txt" />
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
