@@ -42,4 +42,11 @@ public:
     virtual void RunPart2();
 };
 
+class Day05 : public Day
+{
+public:
+    virtual void RunPart1();
+    virtual void RunPart2();
+};
+
 #endif // DAYS_H

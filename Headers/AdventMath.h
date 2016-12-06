@@ -6,22 +6,27 @@
 
 inline int sqr(int x)
 {
-	return x * x;
+	return(x * x);
 }
 
 inline double sqr(double x)
 {
-	return x * x;
+	return(x * x);
 }
 
 inline double ToRadians(double degrees)
 {
-	return degrees * (M_PI / 180);
+	return(degrees * (M_PI / 180));
 }
 
 inline double ToDegrees(double radians)
 {
-	return radians * (180.0 / M_PI);
+	return(radians * (180.0 / M_PI));
+}
+
+inline int ToInt(char c)
+{
+    return(c - '0');
 }
 
 // Inclusive clamp
