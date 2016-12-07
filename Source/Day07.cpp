@@ -104,7 +104,6 @@ void Day07::RunPart1()
                     // ABBA within brackets is instant disqualifier, move on to next string
                     break;
                 }
-                
             }
         }
         ++ipsTotal;
