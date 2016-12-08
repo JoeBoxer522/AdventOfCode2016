@@ -82,6 +82,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Headers\AdventTimer.h" />
     <ClInclude Include="Headers\Days.h" />
     <ClInclude Include="Headers\AdventMath.h" />
     <ClInclude Include="Headers\MD5.h" />
@@ -96,6 +97,7 @@
     <ClCompile Include="Source\Day05.cpp" />
     <ClCompile Include="Source\Day06.cpp" />
     <ClCompile Include="Source\Day07.cpp" />
+    <ClCompile Include="Source\Day08.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Input\Day01.txt" />
@@ -104,6 +106,7 @@
     <Text Include="Input\Day04.txt" />
     <Text Include="Input\Day06.txt" />
     <Text Include="Input\Day07.txt" />
+    <Text Include="Input\Day08.txt" />
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

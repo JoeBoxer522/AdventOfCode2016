@@ -30,6 +30,9 @@
     <ClInclude Include="Headers\MD5.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\AdventTimer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\AdventOfCode2016.cpp">
@@ -56,6 +59,9 @@
     <ClCompile Include="Source\Day07.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Day08.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -75,6 +81,9 @@
       <Filter>Input</Filter>
     </Text>
     <Text Include="Input\Day07.txt">
+      <Filter>Input</Filter>
+    </Text>
+    <Text Include="Input\Day08.txt">
       <Filter>Input</Filter>
     </Text>
   </ItemGroup>

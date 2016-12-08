@@ -1,5 +1,5 @@
-#ifndef MATH_H
-#define MATH_H
+#ifndef ADVENT_MATH_H
+#define ADVENT_MATH_H
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -36,4 +36,4 @@ inline T Clamp(const T& n, const T& lower, const T& upper)
     return std::max(lower, std::min(n, upper));
 }
 
-#endif // MATH_H
+#endif // ADVENT_MATH_H
