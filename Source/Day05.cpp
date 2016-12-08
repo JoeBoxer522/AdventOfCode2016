@@ -3,59 +3,69 @@
 #include "AdventMath.h"
 #include "MD5.h"
 
-const string DOOR_CODE = "reyedfim"; // Test was ABC
 const int PASSWORD_LEN = 8;
 
-void Day05::RunPart1()
+template <>
+void Run<Day05>(Part part, istream& is, std::ostream& os)
 {
-    MD5 md5;
-
-    string doorPassword = string("????????");
-    int pswCharIdx = 0;
-    int incrementIdx = 0;
-
-    printf("\nHAcKing: %s...\n", doorPassword.c_str());
-    while(pswCharIdx < PASSWORD_LEN)
+    if(part == Part01)
     {
-        string s = DOOR_CODE + to_string(incrementIdx);
-        string doorHash = md5.digestString(s.c_str());
-        if(doorHash.substr(0,5) == "00000")
-        {   
-            doorPassword[pswCharIdx] = doorHash.at(5);
-            printf("HAcKing: %s...\n", doorPassword.c_str());
-            pswCharIdx++;
-        }
-        incrementIdx++;
-    }
-    
-    printf("Doorcode %s password is: %s\n", DOOR_CODE.c_str(), doorPassword.c_str());
-}
+        MD5 md5;
 
-void Day05::RunPart2()
-{
-    MD5 md5;
+        string doorPassword = string("????????");
+        int pswCharIdx = 0;
+        int incrementIdx = 0;
 
-    string doorPassword = string("????????");
-    int foundChars = 0;
-    int incrementIdx = 0;
-
-    printf("\nHAcKing: %s...\n", doorPassword.c_str());
-    while(foundChars < PASSWORD_LEN)
-    {
-        string s = DOOR_CODE + to_string(incrementIdx);
-        string doorHash = md5.digestString(s.c_str());
-        if(doorHash.substr(0, 5) == "00000" && isdigit(doorHash.at(5)))
+        string arg;
+        while(getline(is, arg))
         {
-            int passwordCharIdx = ToInt(doorHash.at(5));
-            if(passwordCharIdx < PASSWORD_LEN && doorPassword[passwordCharIdx] == '?')
+            os << "HAcKing: " << doorPassword << "..." << endl;
+            while(pswCharIdx < PASSWORD_LEN)
             {
-                doorPassword[passwordCharIdx] = doorHash.at(6);
-                printf("HAcKing: %s...\n", doorPassword.c_str());
-                foundChars++;
+                string s = arg + to_string(incrementIdx);
+                string doorHash = md5.digestString(s.c_str());
+                if(doorHash.substr(0, 5) == "00000")
+                {
+                    doorPassword[pswCharIdx] = doorHash.at(5);
+                    os << "HAcKing: " << doorPassword << "..." << endl;
+                    pswCharIdx++;
+                }
+                incrementIdx++;
             }
         }
-        incrementIdx++;
-    }
 
-    printf("Doorcode %s password is: %s\n", DOOR_CODE.c_str(), doorPassword.c_str());
+        os << "Doorcode " << arg << " password is: " << doorPassword << endl;
+    }
+    else if(part == Part02)
+    {
+        MD5 md5;
+
+        string doorPassword = string("????????");
+        int foundChars = 0;
+        int incrementIdx = 0;
+
+        string arg;
+        while(getline(is, arg))
+        {
+            os << "HAcKing: " << doorPassword << "..." << endl;
+            while(foundChars < PASSWORD_LEN)
+            {
+                string s = arg + to_string(incrementIdx);
+                string doorHash = md5.digestString(s.c_str());
+                if(doorHash.substr(0, 5) == "00000" && isdigit(doorHash.at(5)))
+                {
+                    int passwordCharIdx = ToInt(doorHash.at(5));
+                    if(passwordCharIdx < PASSWORD_LEN && doorPassword[passwordCharIdx] == '?')
+                    {
+                        doorPassword[passwordCharIdx] = doorHash.at(6);
+                        os << "HAcKing: " << doorPassword << "..." << endl;
+                        foundChars++;
+                    }
+                }
+                incrementIdx++;
+            }
+        }
+
+        os << "Doorcode " << arg << " password is: " << doorPassword << endl;
+    }
 }

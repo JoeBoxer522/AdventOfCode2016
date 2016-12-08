@@ -34,7 +34,7 @@ string GetChecksum(string arg)
     return(arg.substr(start, count));
 }
 
-int GetSector(string arg)
+int GetSector(string arg, ostream& os)
 {
     size_t start = arg.find_last_of('-') + 1;
     size_t end = arg.find('[', start);
@@ -46,7 +46,7 @@ int GetSector(string arg)
     }
     catch(...)
     {
-        cout << "Error: Unable to convert \"" << subStr << "\" to int\n";
+        os << "Error: Unable to convert \"" << subStr << "\" to int\n";
     }
     return(0);
 }
@@ -80,97 +80,95 @@ bool IsChecksumValid(string checkSum, const vector<CharCount>& charCounts)
     return(false);
 }
 
-void Day04::RunPart1()
+template <>
+void Run<Day04>(Part part, istream& is, std::ostream& os)
 {
-    // aaaaa - bbb - z - y - x - 123[abxyz]
-    // a - b - c - d - e - f - g - h - 987[abcde]
-    // not- a - real - room - 404[oarel]
-    // totally - real - room - 200[decoy]
-
-    int totalRooms = 0;
-    int sumSectors = 0;
-    vector<CharCount> charCounts = vector<CharCount>();
-    validRooms.clear();
-
-    ifstream file("Input/Day04.txt");
-    string arg;
-    while(getline(file, arg))
+    if(part == Part01)
     {
-        // Read encrypted letters
-        size_t end = arg.find_last_of('-');
-        for(size_t i=0; i<end; ++i)
+        // aaaaa - bbb - z - y - x - 123[abxyz]
+        // a - b - c - d - e - f - g - h - 987[abcde]
+        // not- a - real - room - 404[oarel]
+        // totally - real - room - 200[decoy]
+
+        int totalRooms = 0;
+        int sumSectors = 0;
+        vector<CharCount> charCounts = vector<CharCount>();
+        validRooms.clear();
+
+        string arg;
+        while(getline(is, arg))
         {
-            if(arg[i] != '-')
+            // Read encrypted letters
+            size_t end = arg.find_last_of('-');
+            for(size_t i = 0; i < end; ++i)
             {
-                IncrementChar(charCounts, arg[i]);
-            }
-        }
-
-        // Sort first on count, then alphabetical (See CharCount '<' operator)
-        sort(charCounts.begin(), charCounts.end());
-
-        // Read checkSum and compare
-        string checkSum = GetChecksum(arg);
-        if(IsChecksumValid(checkSum, charCounts))
-        {
-            sumSectors += GetSector(arg);
-            validRooms.push_back(arg);
-        }
-        charCounts.clear();
-        ++totalRooms;
-    }
-
-    printf("\nTotal Rooms: %i", totalRooms);
-    printf("\nValid Rooms: %i", validRooms.size());
-    printf("\nSum of Sectors: %i\n", sumSectors);
-}
-
-void Day04::RunPart2()
-{
-    if(validRooms.empty())
-    {
-        RunPart1();
-    }
-    const int intA = int('a');
-    const int intZ = int('z');
-    const int alphaDelta = (intZ - intA) + 1;
-    
-    printf("\nDecrypted \"north\" rooms: \n");
-    for(const string& room : validRooms)
-    {
-        // Calculate relative alpha increment based on how many times the sector value 'loops' around alphabet 
-        int sector = GetSector(room);
-        int sectorIncrement = sector % alphaDelta;
-        string s = string();
-
-        // Read encrypted letters
-        size_t end = room.find_last_of('-');
-        for(size_t i = 0; i < end; ++i)
-        {
-            char c = room[i];
-            if(c == '-')
-            {
-                c = ' ';
-            }
-            else
-            {
-                if(c + sectorIncrement > intZ)
+                if(arg[i] != '-')
                 {
-                    // Wrap around alphabet using increment and offsets
-                    c = (intA - 1) + (sectorIncrement - (intZ - c));
+                    IncrementChar(charCounts, arg[i]);
+                }
+            }
+
+            // Sort first on count, then alphabetical (See CharCount '<' operator)
+            sort(charCounts.begin(), charCounts.end());
+
+            // Read checkSum and compare
+            string checkSum = GetChecksum(arg);
+            if(IsChecksumValid(checkSum, charCounts))
+            {
+                sumSectors += GetSector(arg, os);
+                validRooms.push_back(arg);
+            }
+            charCounts.clear();
+            ++totalRooms;
+        }
+
+        os << "Total Rooms: " << totalRooms << endl;
+        os << "Valid Rooms: " << validRooms.size() << endl;
+        os << "Sum of Sectors: " << sumSectors << endl;
+    }
+    else
+    {
+        const int intA = int('a');
+        const int intZ = int('z');
+        const int alphaDelta = (intZ - intA) + 1;
+
+        os << "Decrypted \"north\" rooms: " << endl;
+        for(const string& room : validRooms)
+        {
+            // Calculate relative alpha increment based on how many times the sector value 'loops' around alphabet 
+            int sector = GetSector(room, os);
+            int sectorIncrement = sector % alphaDelta;
+            string s = string();
+
+            // Read encrypted letters
+            size_t end = room.find_last_of('-');
+            for(size_t i = 0; i < end; ++i)
+            {
+                char c = room[i];
+                if(c == '-')
+                {
+                    c = ' ';
                 }
                 else
                 {
-                    // No need to wrap, simply increment the char
-                    c += sectorIncrement;
+                    if(c + sectorIncrement > intZ)
+                    {
+                        // Wrap around alphabet using increment and offsets
+                        c = (intA - 1) + (sectorIncrement - (intZ - c));
+                    }
+                    else
+                    {
+                        // No need to wrap, simply increment the char
+                        c += sectorIncrement;
+                    }
                 }
+                s.push_back(c);
             }
-            s.push_back(c);
-        }
-        if(s.substr(0, 5) == "north")
-        {
-            // Check north rooms to solve this puzzle
-            printf("Room: %s\nSector: %i\n\n", s.c_str(), sector);
+            if(s.substr(0, 5) == "north")
+            {
+                // Check north rooms to solve this puzzle
+                os << "Room: " << s << "\nSector: " << sector << endl;
+            }
         }
     }
 }

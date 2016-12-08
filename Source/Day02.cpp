@@ -18,45 +18,6 @@ static const char NUM_PAD[MAX_NUMPAD][MAX_NUMPAD] = { { '1','4','7' },{ '2','5',
 static const int MAX_NUMPADWEIRD = 5;
 static const char NUM_PAD_WEIRD[MAX_NUMPADWEIRD][MAX_NUMPADWEIRD] = { { ' ',' ','5',' ',' ' },{ ' ','2','6','A',' ' },{ '1','3','7','B','D' },{ ' ','4','8','C',' ' },{ ' ',' ','9',' ',' ' } };
 
-void Day02::RunPart1()
-{
-    // ULL
-    // RRDDD
-    // LURDL
-    // UUUUD
-    
-    // Start at 5
-    int x = 1;
-    int y = 1;
-    
-    cout << "\nThe part 1 bathroom code is: ";
-    ifstream file("Input/Day02.txt");
-    string arg;
-    while(getline(file, arg))
-    {
-        for(size_t i=0; i<arg.length(); ++i) 
-        {
-            switch(arg[i])
-            {
-                case 'U':
-                    y = Clamp(y - 1, 0, MAX_NUMPAD - 1);
-                    break;
-                case 'D':
-                    y = Clamp(y + 1, 0, MAX_NUMPAD - 1);
-                    break;
-                case 'L':
-                    x = Clamp(x - 1, 0, MAX_NUMPAD - 1);
-                    break;
-                case 'R':
-                    x = Clamp(x + 1, 0, MAX_NUMPAD - 1);
-                    break;
-            }
-        }
-        cout << NUM_PAD[x][y];
-    }
-    cout << endl << endl;
-}
-
 bool TestNumPadWeird(int x, int y)
 {
     if(x < 0 || x >= MAX_NUMPADWEIRD)
@@ -74,53 +35,93 @@ bool TestNumPadWeird(int x, int y)
     return(true);
 }
 
-void Day02::RunPart2()
+template <>
+void Run<Day02>(Part part, istream& is, std::ostream& os)
 {
-    // ULL
-    // RRDDD
-    // LURDL
-    // UUUUD
-
-    // Start at 5
-    int x = 0;
-    int y = 2;
-
-    cout << "\nThe part 2 bathroom code is: ";
-    ifstream file("Input/Day02.txt");
-    string arg;
-    while(getline(file, arg))
+    if(part == Part01)
     {
-        for(size_t i = 0; i < arg.length(); ++i)
+        // ULL
+        // RRDDD
+        // LURDL
+        // UUUUD
+
+        // Start at 5
+        int x = 1;
+        int y = 1;
+
+        os << "Bathroom code is: ";
+        string arg;
+        while(getline(is, arg))
         {
-            switch(arg[i])
+            for(size_t i = 0; i < arg.length(); ++i)
             {
-                case 'U':
-                    if(TestNumPadWeird(x, y - 1))
-                    {
-                        y -= 1;
-                    }
-                    break;
-                case 'D':
-                    if(TestNumPadWeird(x, y + 1))
-                    {
-                        y += 1;
-                    }
-                    break;
-                case 'L':
-                    if(TestNumPadWeird(x - 1, y))
-                    {
-                        x -= 1;
-                    }
-                    break;
-                case 'R':
-                    if(TestNumPadWeird(x + 1, y))
-                    {
-                        x += 1;
-                    }
-                    break;
+                switch(arg[i])
+                {
+                    case 'U':
+                        y = Clamp(y - 1, 0, MAX_NUMPAD - 1);
+                        break;
+                    case 'D':
+                        y = Clamp(y + 1, 0, MAX_NUMPAD - 1);
+                        break;
+                    case 'L':
+                        x = Clamp(x - 1, 0, MAX_NUMPAD - 1);
+                        break;
+                    case 'R':
+                        x = Clamp(x + 1, 0, MAX_NUMPAD - 1);
+                        break;
+                }
             }
+            os << NUM_PAD[x][y];
         }
-        cout << NUM_PAD_WEIRD[x][y];
+        os << endl;
     }
-    cout << endl << endl;
+    else if(part == Part02)
+    {
+        // ULL
+        // RRDDD
+        // LURDL
+        // UUUUD
+
+        // Start at 5
+        int x = 0;
+        int y = 2;
+
+        os << "Bathroom code is: ";
+        string arg;
+        while(getline(is, arg))
+        {
+            for(size_t i = 0; i < arg.length(); ++i)
+            {
+                switch(arg[i])
+                {
+                    case 'U':
+                        if(TestNumPadWeird(x, y - 1))
+                        {
+                            y -= 1;
+                        }
+                        break;
+                    case 'D':
+                        if(TestNumPadWeird(x, y + 1))
+                        {
+                            y += 1;
+                        }
+                        break;
+                    case 'L':
+                        if(TestNumPadWeird(x - 1, y))
+                        {
+                            x -= 1;
+                        }
+                        break;
+                    case 'R':
+                        if(TestNumPadWeird(x + 1, y))
+                        {
+                            x += 1;
+                        }
+                        break;
+                }
+            }
+            os << NUM_PAD_WEIRD[x][y];
+        }
+        os << endl;
+    }
 }

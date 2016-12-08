@@ -7,67 +7,54 @@
 
 using namespace std;
 
-class Day
+enum Day 
 {
-public:
-	virtual void RunPart1() = 0;
-	virtual void RunPart2() = 0;
+    Day01,
+    Day02,
+    Day03,
+    Day04,
+    Day05,
+    Day06,
+    Day07,
+    Day08,
+    Day09,
+    Day10,
+    Day11,
+    Day12,
+    Day13,
+    Day14,
+    Day15,
+    Day16,
+    Day17,
+    Day18,
+    Day19,
+    Day20,
+    Day21,
+    Day22,
+    Day23,
+    Day24,
+    Day25,
+    TOTAL_DAYS
 };
 
-class Day01 : public Day
+enum Part
 {
-public:
-    virtual void RunPart1();
-    virtual void RunPart2();
+    Part01,
+    Part02,
+    TOTAL_PARTS
 };
 
-class Day02 : public Day
-{
-public:
-    virtual void RunPart1();
-    virtual void RunPart2();
-};
+string ToString(Day d);
+string ToString(Part p);
 
-class Day03 : public Day
+template <Day day>
+void Run(Part part, istream& is, ostream& os)
 {
-public:
-    virtual void RunPart1();
-    virtual void RunPart2();
-};
-
-class Day04 : public Day
-{
-public:
-    virtual void RunPart1();
-    virtual void RunPart2();
-};
-
-class Day05 : public Day
-{
-public:
-    virtual void RunPart1();
-    virtual void RunPart2();
-};
-
-class Day06 : public Day
-{
-public:
-    virtual void RunPart1();
-    virtual void RunPart2();
-};
-
-class Day07 : public Day
-{
-public:
-    virtual void RunPart1();
-    virtual void RunPart2();
-};
-
-class Day08 : public Day
-{
-public:
-    virtual void RunPart1();
-    virtual void RunPart2();
+    os << ToString(day) " " << ToString(part) << " has not been implemented" endl;
+    if(is.bad())
+    {
+        os << "Input file does not exist" << endl;
+    }
 };
 
 #endif // DAYS_H

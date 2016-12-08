@@ -14,94 +14,95 @@ struct Triangle
     void Clear() {points.clear();}
 };
 
-void Day03::RunPart1()
+template <>
+void Run<Day03>(Part part, istream& is, std::ostream& os)
 {
-    // Read input horizontally (one triangle per line)
-    int numTriPossible = 0;
-    int numTriTotal = 0;
-    Triangle tri = Triangle();
-
-    ifstream file("Input/Day03.txt");
-    string arg;
-    while(getline(file, arg, ' '))
+    if(part == Part01)
     {
-        if(arg.length() > 0)
+        // Read input horizontally (one triangle per line)
+        int numTriPossible = 0;
+        int numTriTotal = 0;
+        Triangle tri = Triangle();
+
+        string arg;
+        while(getline(is, arg, ' '))
         {
-            try
+            if(arg.length() > 0)
             {
-                int side = stoi(arg);
-                tri.points.push_back(side);
-            }
-            catch(...)
-            {
-                cout << "Error: Unable to convert \"" << arg << "\" to int\n";
-            }
-        }
-        if(tri.Size() == 3)
-        {
-            if(tri.A() + tri.B() > tri.C() &&
-                tri.B() + tri.C() > tri.A() &&
-                tri.C() + tri.A() > tri.B())
-            {
-                numTriPossible++;
-            }
-            numTriTotal++;
-            tri.Clear();
-        }
-    }
-
-    printf("\nPossible Triangles: %i", numTriPossible);
-    printf("\nTotal Triangles: %i\n", numTriTotal);
-}
-
-void Day03::RunPart2()
-{
-    // Read input vertically in parallel (three triangles every three columns)
-    int numTriPossible = 0;
-    int numTriTotal = 0;
-
-    const int MAX_TRI = 3;
-    int triIdx = 0;
-    Triangle triangles[MAX_TRI] = { Triangle(), Triangle(), Triangle() };
-
-    ifstream file("Input/Day03.txt");
-    string arg;
-    while(getline(file, arg, ' '))
-    {
-        Triangle& tri = triangles[triIdx];
-        if(arg.length() > 0)
-        {
-            try
-            {
-                int side = stoi(arg);
-                tri.points.push_back(side);
-
-                // Prep to read input for next triangle
-                ++triIdx;
-                if(triIdx >= MAX_TRI)
+                try
                 {
-                    triIdx = 0;
+                    int side = stoi(arg);
+                    tri.points.push_back(side);
+                }
+                catch(...)
+                {
+                    os << "Error: Unable to convert \"" << arg << "\" to int\n";
                 }
             }
-            catch(...)
+            if(tri.Size() == 3)
             {
-                cout << "Error: Unable to convert \"" << arg << "\" to int\n";
+                if(tri.A() + tri.B() > tri.C() &&
+                    tri.B() + tri.C() > tri.A() &&
+                    tri.C() + tri.A() > tri.B())
+                {
+                    numTriPossible++;
+                }
+                numTriTotal++;
+                tri.Clear();
             }
         }
 
-        if(tri.Size() == 3)
-        {
-            if(tri.A() + tri.B() > tri.C() &&
-                tri.B() + tri.C() > tri.A() &&
-                tri.C() + tri.A() > tri.B())
-            {
-                numTriPossible++;
-            }
-            numTriTotal++;
-            tri.Clear();
-        }
+        os << "Possible Triangles: " << numTriPossible << endl;
+        os << "Total Triangles: " << numTriTotal << endl;
     }
+    else if(part == Part02)
+    {
+        // Read input vertically in parallel (three triangles every three columns)
+        int numTriPossible = 0;
+        int numTriTotal = 0;
 
-    printf("\nPossible Triangles: %i", numTriPossible);
-    printf("\nTotal Triangles: %i\n", numTriTotal);
+        const int MAX_TRI = 3;
+        int triIdx = 0;
+        Triangle triangles[MAX_TRI] = { Triangle(), Triangle(), Triangle() };
+
+        string arg;
+        while(getline(is, arg, ' '))
+        {
+            Triangle& tri = triangles[triIdx];
+            if(arg.length() > 0)
+            {
+                try
+                {
+                    int side = stoi(arg);
+                    tri.points.push_back(side);
+
+                    // Prep to read input for next triangle
+                    ++triIdx;
+                    if(triIdx >= MAX_TRI)
+                    {
+                        triIdx = 0;
+                    }
+                }
+                catch(...)
+                {
+                    os << "Error: Unable to convert \"" << arg << "\" to int\n";
+                }
+            }
+
+            if(tri.Size() == 3)
+            {
+                if(tri.A() + tri.B() > tri.C() &&
+                    tri.B() + tri.C() > tri.A() &&
+                    tri.C() + tri.A() > tri.B())
+                {
+                    numTriPossible++;
+                }
+                numTriTotal++;
+                tri.Clear();
+            }
+        }
+
+        os << "Possible Triangles: " << numTriPossible << endl;
+        os << "Total Triangles: " << numTriTotal << endl;
+    }
 }

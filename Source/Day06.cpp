@@ -32,14 +32,13 @@ enum SORT_TYPE
     COUNT_LEAST
 };
 
-string GetCorrectedMessage(SORT_TYPE sortType)
+string GetCorrectedMessage(SORT_TYPE sortType, istream& is)
 {
     // Populate frequent characters by input column
     if(frequentChars.size() == 0)
     {
-        ifstream file("Input/Day06.txt");
         string arg;
-        while(getline(file, arg))
+        while(getline(is, arg))
         {
             for(size_t i = 0; i < arg.length(); ++i)
             {
@@ -84,12 +83,9 @@ string GetCorrectedMessage(SORT_TYPE sortType)
     return correctedMessage;
 }
 
-void Day06::RunPart1()
+template <>
+void Run<Day06>(Part part, istream& is, std::ostream& os)
 {
-    printf("\nCorrected message is: %s\n", GetCorrectedMessage(SORT_TYPE::COUNT_MOST).c_str());
-}
-
-void Day06::RunPart2()
-{
-    printf("\nCorrected message is: %s\n", GetCorrectedMessage(SORT_TYPE::COUNT_LEAST).c_str());
+    SORT_TYPE sortType = part == Part01 ? COUNT_MOST : COUNT_LEAST;
+    os << "Corrected message is: " << GetCorrectedMessage(sortType, is) << endl;
 }

@@ -56,135 +56,134 @@ bool HasBABMatches(const string& s, const vector<string>& abaStrings)
     return(false);
 }
 
-void Day07::RunPart1()
+template <>
+void Run<Day07>(Part part, istream& is, std::ostream& os)
 {
-    size_t ipsTotal = 0;
-    size_t ipsTLS = 0;
-
-    ifstream file("Input/Day07.txt");
-    string arg;
-    while(getline(file, arg))
+    if(part == Part01)
     {
-        string testStr = string();
-        bool withinBrackets = false;
-        bool isTLS = false;
+        size_t ipsTotal = 0;
+        size_t ipsTLS = 0;
 
-        for(size_t i = 0; i < arg.length(); ++i)
+        string arg;
+        while(getline(is, arg))
         {
-            char c = arg[i];
-            if(isalpha(c))
+            string testStr = string();
+            bool withinBrackets = false;
+            bool isTLS = false;
+
+            for(size_t i = 0; i < arg.length(); ++i)
             {
-                testStr.push_back(c);   
-            }
-            else
-            {
-                switch(c)
+                char c = arg[i];
+                if(isalpha(c))
                 {
-                    case '[':
-                        withinBrackets = true;
-                        break;
-                    case ']':
-                        withinBrackets = false;
-                        break;
-                }
-                // Start a new test string to test what's within the brackets
-                testStr.clear();
-            }
-
-            // Maintain expected ABBA length, queue style FIFO
-            while(testStr.length() > ABBA_LEN)
-            {
-                testStr.erase(testStr.begin());
-            }
-            if(IsStringABBA(testStr))
-            {
-                isTLS = !withinBrackets;
-                if(withinBrackets)
-                {
-                    // ABBA within brackets is instant disqualifier, move on to next string
-                    break;
-                }
-            }
-        }
-        ++ipsTotal;
-        if(isTLS)
-        {
-            ++ipsTLS;
-        }
-    }
-    file.close();
-
-    printf("Total IPs: %i\n", ipsTotal);
-    printf("TLS IPs: %i\n\n", ipsTLS);
-}
-
-void Day07::RunPart2()
-{
-    size_t ipsTotal = 0;
-    size_t ipsSSL = 0;
-
-    ifstream file("Input/Day07.txt");
-    string arg;
-    while(getline(file, arg))
-    {
-        string testStr = string();
-        bool withinBrackets = false;
-        vector<string> abaStrings = vector<string>();
-        vector<string> abaStringsBracket = vector<string>();
-
-        for(size_t i = 0; i < arg.length(); ++i)
-        {
-            char c = arg[i];
-            if(isalpha(c))
-            {
-                testStr.push_back(c);
-            }
-            else
-            {
-                switch(c)
-                {
-                    case '[':
-                        withinBrackets = true;
-                        break;
-                    case ']':
-                        withinBrackets = false;
-                        break;
-                }
-                // Start a new test string to test what's within the brackets
-                testStr.clear();
-            }
-
-            // Maintain expected ABA length, queue style FIFO
-            while(testStr.length() > ABA_LEN)
-            {
-                testStr.erase(testStr.begin());
-            }
-            if(IsStringABA(testStr))
-            {
-                if(withinBrackets)
-                {
-                    abaStringsBracket.push_back(testStr);
+                    testStr.push_back(c);   
                 }
                 else
                 {
-                    abaStrings.push_back(testStr);
+                    switch(c)
+                    {
+                        case '[':
+                            withinBrackets = true;
+                            break;
+                        case ']':
+                            withinBrackets = false;
+                            break;
+                    }
+                    // Start a new test string to test what's within the brackets
+                    testStr.clear();
+                }
+
+                // Maintain expected ABBA length, queue style FIFO
+                while(testStr.length() > ABBA_LEN)
+                {
+                    testStr.erase(testStr.begin());
+                }
+                if(IsStringABBA(testStr))
+                {
+                    isTLS = !withinBrackets;
+                    if(withinBrackets)
+                    {
+                        // ABBA within brackets is instant disqualifier, move on to next string
+                        break;
+                    }
                 }
             }
-        }
-        ++ipsTotal;
-
-        // Compare ABA strings within brackets to ABA strings outside of them to see if there are any BAB matches
-        for(const string& abaStrBracket : abaStringsBracket)
-        {
-            if(HasBABMatches(abaStrBracket, abaStrings))
+            ++ipsTotal;
+            if(isTLS)
             {
-                ipsSSL++;
-                break;
-            }            
+                ++ipsTLS;
+            }
         }
-    }
-    file.close();
 
-    printf("Total IPs: %i\n", ipsTotal);
-    printf("TLS SSLs: %i\n\n", ipsSSL);
+        os << "Total IPs: " << ipsTotal << endl;
+        os << "TLS IPs: " << ipsTLS << endl;
+    }
+    else if(part == Part02)
+    {
+        size_t ipsTotal = 0;
+        size_t ipsSSL = 0;
+
+        string arg;
+        while(getline(is, arg))
+        {
+            string testStr = string();
+            bool withinBrackets = false;
+            vector<string> abaStrings = vector<string>();
+            vector<string> abaStringsBracket = vector<string>();
+
+            for(size_t i = 0; i < arg.length(); ++i)
+            {
+                char c = arg[i];
+                if(isalpha(c))
+                {
+                    testStr.push_back(c);
+                }
+                else
+                {
+                    switch(c)
+                    {
+                        case '[':
+                            withinBrackets = true;
+                            break;
+                        case ']':
+                            withinBrackets = false;
+                            break;
+                    }
+                    // Start a new test string to test what's within the brackets
+                    testStr.clear();
+                }
+
+                // Maintain expected ABA length, queue style FIFO
+                while(testStr.length() > ABA_LEN)
+                {
+                    testStr.erase(testStr.begin());
+                }
+                if(IsStringABA(testStr))
+                {
+                    if(withinBrackets)
+                    {
+                        abaStringsBracket.push_back(testStr);
+                    }
+                    else
+                    {
+                        abaStrings.push_back(testStr);
+                    }
+                }
+            }
+            ++ipsTotal;
+
+            // Compare ABA strings within brackets to ABA strings outside of them to see if there are any BAB matches
+            for(const string& abaStrBracket : abaStringsBracket)
+            {
+                if(HasBABMatches(abaStrBracket, abaStrings))
+                {
+                    ipsSSL++;
+                    break;
+                }            
+            }
+        }
+
+        os << "Total IPs: " << ipsTotal << endl;
+        os << "SSL IPs: " << ipsSSL << endl;
+    }
 }

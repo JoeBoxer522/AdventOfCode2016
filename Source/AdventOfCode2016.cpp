@@ -4,127 +4,177 @@
 #include "AdventTimer.h"
 #include "Days.h"
 
+#include <sstream>
+#include <vector>
+
+double RunTimed(Day day, Part part, istream& is, ostream& os);
+
 int main(int argc, const char* argv[])
 {
-	Day* day = new Day08();
-
-    double runTime = 0.0;
-    AdventTimer timer;
-	day->RunPart1();
-    printf("\nPart 1 runtime: %d\n", timer.current());
-
-    start = HiResClock::now();
-	day->RunPart2();
-    runTime = chrono::duration<double, std::milli>{ HiResClock::now() - start }.count();
-    printf("\nPart 2 runtime: %d\n", runTime);
-
-	delete day;
-    system("pause");
-	return 0;
-
-    double        resTime{ 0.0 };
-    std::ifstream is{ "./inputs/" + asString(DAY) + ".txt" };
-    if(time) {
-        Timer t;
-        solve<DAY>(part2, is, os);
-        resTime = t.current();
-        os.precision(5);
-        os << "  time: ";
-        os.setf(std::ios::fixed, std::ios::floatfield);
-        os << resTime << "ms" << std::endl;
-    }
-    else
-        solve<DAY>(part2, is, os);
-    return resTime;
-
-
-    std::ofstream DEVNULL{ "/dev/null" };
-    options_t     options = parseArgs(argc, argv);
-    double        totalTime{ 0.0 };
-    std::ostream  os{ options.time == TIME_TOTAL ? DEVNULL.rdbuf() : std::cout.rdbuf() };
-    for(int d{ Day01 }; d != TOTAL_DAYS; ++d) 
+    ostream os(cout.rdbuf());
+    vector<string> days = vector<string>();
+    if(argc > 1)
     {
-        Day day{ static_cast<Day>(d) };
-        if(!std::regex_search(asString(day), options.filter))
-            continue;
-        os << asString(day) << ((options.part1 && options.part2) ? "\n" : ": ");
-        if(options.part1) {
-            if(options.part2)
-                os << "Part 1: ";
-            totalTime += run(day, false, options.time, os);
-        }
-        if(options.part2) {
-            if(options.part1)
-                os << "Part 2: ";
-            totalTime += run(day, true, options.time, os);
+        stringstream ss(argv[1]); // Turn the string into a stream.
+        string arg;
+
+        while(getline(ss, arg, '|')) 
+        {
+            days.push_back(arg);
         }
     }
-    if(options.time == TIME_TOTAL) {
-        std::cout.precision(5);
-        std::cout << "  time: ";
-        std::cout.setf(std::ios::fixed, std::ios::floatfield);
-        std::cout << totalTime << "ms" << std::endl;
+
+    double totalTime(0.0);
+    for(int d = Day::Day01; d < Day::TOTAL_DAYS; ++d)
+    {
+        Day day = Day(d);
+        string dayStr = ToString(day);
+        if(days.empty() || find(days.begin(), days.end(), dayStr) != days.end())
+        {
+            os << "*********************** " << dayStr << " ************************" << endl;
+            ifstream is{ "Input/" + dayStr + ".txt" };
+            for(int p = Part::Part01; p < Part::TOTAL_PARTS; ++p)
+            {
+                Part part = Part(p);
+                os << ToString(part) << ":" << endl << endl;
+                is.clear();
+                is.seekg(0, ios::beg);
+                totalTime += RunTimed(day, part, is, os);
+                if(p != Part::TOTAL_PARTS-1)
+                {
+                    os << "------------------------------------------------------" << endl;
+                }
+            }
+            is.close();
+            os << "******************************************************" << endl << endl << endl;
+        }
     }
+
+    os.precision(5);
+    os << "Total time: ";
+    os.setf(ios::fixed, ios::floatfield);
+    os << totalTime << "ms" << endl;
+
+    system("pause");
     return EXIT_SUCCESS;
 }
 
-parseArgs(int argc, char* argv[])
-{
-    options_t                options;
-    static char const* const shortOpts{ "htnp:f:" };
-    static const std::array<const ::option, 6> longOpts{ { { "help", no_argument, nullptr, 'h' },
-    { "part", required_argument, nullptr, 'p' },
-    { "filter", required_argument, nullptr, 'f' },
-    { "time", required_argument, nullptr, 't' },
-    { nullptr, 0, nullptr, 0 } } };
-    int option{ 0 };
-    while(option = getopt_long(argc, argv, shortOpts, longOpts.data(), nullptr), option != -1) {
-        switch(option) {
-        case 'h':
-        case '?':
-            printf("Advent of Code - 2015\n"
-                "---------------------\n"
-                " -h|--help )\n    print help\n"
-                " -p|--part=[1,2,all] )\n    only run parts specified [default = all]\n"
-                " -f|--filter=<regex> )\n    filter day on regular expression [default = match all]\n"
-                " -t|--time=[no,yes,total] )\n print timing of exection [default = no]\n"
-                "\n"
-                " Implementation by William Killian (c) 2016\n");
-            exit(EXIT_SUCCESS);
-            break;
-        case 'p':
-            if(optarg[0] == '1')
-                options.part2 = false;
-            else if(optarg[0] == '2')
-                options.part1 = false;
-            break;
-        case 'f':
-            options.filter = std::regex{ optarg };
-            break;
-        case 't':
-            std::string arg{ optarg };
-            options.time = (arg == "no" ? NO_TIME : (arg == "yes" ? TIME_IND : TIME_TOTAL));
-            break;
-        }
-    }
-    return options;
-}
+extern template void Run<Day01>(Part, istream&, ostream&);
+extern template void Run<Day02>(Part, istream&, ostream&);
+extern template void Run<Day03>(Part, istream&, ostream&);
+extern template void Run<Day04>(Part, istream&, ostream&);
+extern template void Run<Day05>(Part, istream&, ostream&);
+extern template void Run<Day06>(Part, istream&, ostream&);
+extern template void Run<Day07>(Part, istream&, ostream&);
+extern template void Run<Day08>(Part, istream&, ostream&);
+extern template void Run<Day09>(Part, istream&, ostream&);
+extern template void Run<Day10>(Part, istream&, ostream&);
+extern template void Run<Day11>(Part, istream&, ostream&);
+extern template void Run<Day12>(Part, istream&, ostream&);
+extern template void Run<Day13>(Part, istream&, ostream&);
+extern template void Run<Day14>(Part, istream&, ostream&);
+extern template void Run<Day15>(Part, istream&, ostream&);
+extern template void Run<Day16>(Part, istream&, ostream&);
+extern template void Run<Day17>(Part, istream&, ostream&);
+extern template void Run<Day18>(Part, istream&, ostream&);
+extern template void Run<Day19>(Part, istream&, ostream&);
+extern template void Run<Day20>(Part, istream&, ostream&);
+extern template void Run<Day21>(Part, istream&, ostream&);
+extern template void Run<Day22>(Part, istream&, ostream&);
+extern template void Run<Day23>(Part, istream&, ostream&);
+extern template void Run<Day24>(Part, istream&, ostream&);
+extern template void Run<Day25>(Part, istream&, ostream&);
 
-double timeSolve(bool part2, bool time, std::ostream& os)
+double RunTimed(Day day, Part part, istream& is, ostream& os)
 {
-    double        resTime{ 0.0 };
-    std::ifstream is{ "./inputs/" + asString(DAY) + ".txt" };
-    if(time) 
+    double runTime(0.0);
+    AdventTimer timer;
+
+    switch(day)
     {
-        Timer t;
-        solve<DAY>(part2, is, os);
-        resTime = t.current();
-        os.precision(5);
-        os << "  time: ";
-        os.setf(std::ios::fixed, std::ios::floatfield);
-        os << resTime << "ms" << std::endl;
+        case Day01:
+            Run<Day01>(part, is, os);
+            break;
+        case Day02:
+            Run<Day02>(part, is, os);
+            break;
+        case Day03:
+            Run<Day03>(part, is, os);
+            break;
+        case Day04:
+            Run<Day04>(part, is, os);
+            break;
+        case Day05:
+            Run<Day05>(part, is, os);
+            break;
+        case Day06:
+            Run<Day06>(part, is, os);
+            break;
+        case Day07:
+            Run<Day07>(part, is, os);
+            break;
+        case Day08:
+            Run<Day08>(part, is, os);
+            break;
+        case Day09:
+            Run<Day09>(part, is, os);
+            break;
+        case Day10:
+            Run<Day10>(part, is, os);
+            break;
+        case Day11:
+            Run<Day11>(part, is, os);
+            break;
+        case Day12:
+            Run<Day12>(part, is, os);
+            break;
+        case Day13:
+            Run<Day13>(part, is, os);
+            break;
+        case Day14:
+            Run<Day14>(part, is, os);
+            break;
+        case Day15:
+            Run<Day15>(part, is, os);
+            break;
+        case Day16:
+            Run<Day16>(part, is, os);
+            break;
+        case Day17:
+            Run<Day17>(part, is, os);
+            break;
+        case Day18:
+            Run<Day18>(part, is, os);
+            break;
+        case Day19:
+            Run<Day19>(part, is, os);
+            break;
+        case Day20:
+            Run<Day20>(part, is, os);
+            break;
+        case Day21:
+            Run<Day21>(part, is, os);
+            break;
+        case Day22:
+            Run<Day22>(part, is, os);
+            break;
+        case Day23:
+            Run<Day23>(part, is, os);
+            break;
+        case Day24:
+            Run<Day24>(part, is, os);
+            break;
+        case Day25:
+            Run<Day25>(part, is, os);
+            break;
+        default:
+            os << "Unable to parse day: " << ToString(day);
+            break;
     }
-    else
-        solve<DAY>(part2, is, os);
-    return resTime;
+    runTime = timer.current();
+    os.precision(5);
+    os << endl << "Time: ";
+    os.setf(ios::fixed, ios::floatfield);
+    os << runTime << "ms" << endl;
+    return runTime;    
 }
