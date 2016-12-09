@@ -84,7 +84,7 @@ string GetCorrectedMessage(SORT_TYPE sortType, istream& is)
 }
 
 template <>
-void Run<Day06>(Part part, istream& is, std::ostream& os)
+void Run<Day06>(Part part, istream& is, ostream& os)
 {
     SORT_TYPE sortType = part == Part01 ? COUNT_MOST : COUNT_LEAST;
     os << "Corrected message is: " << GetCorrectedMessage(sortType, is) << endl;

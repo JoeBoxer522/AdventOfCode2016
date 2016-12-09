@@ -7,7 +7,7 @@
 struct Triangle
 {
     vector<int> points;
-    int Size() const { return(points.size()); }
+    size_t Size() const { return(points.size()); }
     int A() const { return points.at(0); }
     int B() const { return points.at(1); }
     int C() const { return points.at(2); }
@@ -15,7 +15,7 @@ struct Triangle
 };
 
 template <>
-void Run<Day03>(Part part, istream& is, std::ostream& os)
+void Run<Day03>(Part part, istream& is, ostream& os)
 {
     if(part == Part01)
     {

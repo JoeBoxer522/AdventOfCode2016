@@ -257,7 +257,7 @@ public:
     // context.
     void Update(
         unsigned char *input,   // input block
-        unsigned int inputLen) // length of input block
+        size_t inputLen) // length of input block
     {
         unsigned int i, index, partLen;
 
@@ -343,7 +343,7 @@ public:
 
         FILE *file;
 
-        int len;
+        size_t len;
         unsigned char buffer[1024];
 
         if((fopen_s(&file, filename, "rb")) == NULL)

@@ -6,7 +6,7 @@ const size_t COL_MAX = 50;
 const size_t ROW_MAX = 6;
 
 template <>
-void Run<Day08>(Part part, istream& is, std::ostream& os)
+void Run<Day08>(Part part, istream& is, ostream& os)
 {
     if(part == Part01)
     {

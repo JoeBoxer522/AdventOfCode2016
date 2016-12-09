@@ -36,7 +36,7 @@ bool TestNumPadWeird(int x, int y)
 }
 
 template <>
-void Run<Day02>(Part part, istream& is, std::ostream& os)
+void Run<Day02>(Part part, istream& is, ostream& os)
 {
     if(part == Part01)
     {

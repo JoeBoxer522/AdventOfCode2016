@@ -6,7 +6,7 @@
 const int PASSWORD_LEN = 8;
 
 template <>
-void Run<Day05>(Part part, istream& is, std::ostream& os)
+void Run<Day05>(Part part, istream& is, ostream& os)
 {
     if(part == Part01)
     {

@@ -57,7 +57,7 @@ bool HasBABMatches(const string& s, const vector<string>& abaStrings)
 }
 
 template <>
-void Run<Day07>(Part part, istream& is, std::ostream& os)
+void Run<Day07>(Part part, istream& is, ostream& os)
 {
     if(part == Part01)
     {

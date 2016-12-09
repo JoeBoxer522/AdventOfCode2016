@@ -60,7 +60,7 @@ bool Test2DSegment(const Vector2D& a, const Vector2D& b, const Vector2D& c, cons
 }
 
 template <>
-void Run<Day01>(Part part, istream& is, std::ostream& os)
+void Run<Day01>(Part part, istream& is, ostream& os)
 {
     if(part == Part01)
     {

@@ -81,7 +81,7 @@ bool IsChecksumValid(string checkSum, const vector<CharCount>& charCounts)
 }
 
 template <>
-void Run<Day04>(Part part, istream& is, std::ostream& os)
+void Run<Day04>(Part part, istream& is, ostream& os)
 {
     if(part == Part01)
     {
