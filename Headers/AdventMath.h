@@ -4,12 +4,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-inline int sqr(int x)
-{
-	return(x * x);
-}
-
-inline double sqr(double x)
+template <typename T>
+inline T sqr(T x)
 {
 	return(x * x);
 }
