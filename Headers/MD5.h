@@ -29,6 +29,7 @@
 // string.h for memcpy.
 #include <stdio.h>
 #include <string.h>
+#include <string>
 
 #pragma region MD5 defines
 // Constants for MD5Transform routine.
@@ -378,6 +379,11 @@ public:
         Final();
 
         return digestChars;
+    }
+
+    std::string digestString(const std::string string)
+    {
+        return digestString(string.c_str());
     }
 };
 
