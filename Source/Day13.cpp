@@ -1,4 +1,5 @@
 #include "Days.h"
+#include "Point2D.h"
 #include <array>
 #include <bitset>
 #include <map>
@@ -12,45 +13,18 @@
 
 static int magicNum = 0;
 
-struct Point
+bool IsOpen(const Point2D& p)
 {
-    int x;
-    int y;
-
-    Point() :
-        x(0), y(0)
-    {}
-    Point(int inX, int inY) :
-        x(inX), y(inY)
-    {}
-
-    bool IsOpen() const
+    int x = p.x;
+    int y = p.y;
+    if(x >= 0 && y >= 0)
     {
-        if(x >= 0 && y >=0)
-        {
-            const int value = (x*x + 3*x + 2*x*y + y + y*y) + magicNum;
-            const bitset<16> valueBits = bitset<16>(value);
-            return (valueBits.count() % 2 == 0);
-        }
-        return false;
+        const int value = (x*x + 3 * x + 2 * x*y + y + y*y) + magicNum;
+        const bitset<16> valueBits = bitset<16>(value);
+        return (valueBits.count() % 2 == 0);
     }
-    bool operator==(const Point& p) const
-    {
-        return(x == p.x && y == p.y);
-    }
-    bool operator!=(const Point& p) const
-    {
-        return(x != p.x || y != p.y);
-    }
-    bool operator<(const Point& p) const
-    {
-        return y == p.y ? x < p.x : y < p.y;
-    }
-    Point operator+(const Point& p) const
-    {
-        return(Point(x+p.x, y+p.y));
-    }
-};
+    return false;
+}
 
 template <>
 void Run<Day13>(Part part, istream& is, ostream& os)
@@ -58,27 +32,27 @@ void Run<Day13>(Part part, istream& is, ostream& os)
     magicNum = stoi(string(istreambuf_iterator<char>(is), {}));
 
     const size_t BIG = size_t(1e9);
-    const array<Point, 4> DIRS{ Point(-1, 0),Point(1, 0),Point(0, -1),Point(0, 1) };
-    const Point P_START = Point(1, 1);
-    const Point P_GOAL = (part == Part01 ? Point(31, 39) : Point(BIG, BIG));
+    const array<Point2D, 4> DIRS{ Point2D(-1, 0),Point2D(1, 0),Point2D(0, -1),Point2D(0, 1) };
+    const Point2D P_START = Point2D(1, 1);
+    const Point2D P_GOAL = (part == Part01 ? Point2D(31, 39) : Point2D(BIG, BIG));
     const size_t SEARCH_MAX = size_t(part == Part02 ? 50 : BIG);
 
     // Queue of points to visit
-    queue<Point> pointsQueue = queue<Point>();
+    queue<Point2D> pointsQueue = queue<Point2D>();
     pointsQueue.push(P_START);
     
     // Map of points visited and the distance from start to that point
     // A more complicated version of this would be to map points to their possible paths instead of a count
-    map<Point, size_t> pointPathMap = map<Point, size_t>();
+    map<Point2D, size_t> pointPathMap = map<Point2D, size_t>();
     pointPathMap.emplace(P_START, 0);
 
     while(!pointsQueue.empty() && pointPathMap.find(P_GOAL) == pointPathMap.end())
     {
-        const Point& pointCur = pointsQueue.front();
-        for(const Point& dir : DIRS)
+        const Point2D& pointCur = pointsQueue.front();
+        for(const Point2D& dir : DIRS)
         {
-            const Point pointNext = (pointCur + dir);
-            if(pointNext.IsOpen() && pointPathMap.find(pointNext) == pointPathMap.end())
+            const Point2D pointNext = (pointCur + dir);
+            if(IsOpen(pointNext) && pointPathMap.find(pointNext) == pointPathMap.end())
             {
                 const size_t searchDist = pointPathMap[pointCur];
                 if(searchDist < SEARCH_MAX)
