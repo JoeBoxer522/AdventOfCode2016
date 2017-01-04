@@ -241,6 +241,13 @@ public:
         Init();
     }
 
+    ~MD5()
+    {
+        memset((POINTER)&context, 0, sizeof(context));
+        memset(&digestRaw, 0, sizeof(digestRaw));
+        memset(&digestChars, 0, sizeof(digestRaw));
+    }
+
     // MD5 initialization. Begins an MD5 operation, writing a new context.
     void Init()
     {
@@ -260,7 +267,7 @@ public:
         unsigned char *input,   // input block
         size_t inputLen) // length of input block
     {
-        unsigned int i, index, partLen;
+        size_t i, index, partLen;
 
         // Compute number of bytes mod 64
         index = (unsigned int)((context.count[0] >> 3) & 0x3F);
@@ -274,7 +281,8 @@ public:
         partLen = 64 - index;
 
         // Transform as many times as possible.
-        if(inputLen >= partLen) {
+        if(inputLen >= partLen) 
+        {
             memcpy((POINTER)&context.buffer[index], (POINTER)input, partLen);
             MD5Transform(context.state, context.buffer);
 
@@ -284,8 +292,9 @@ public:
             index = 0;
         }
         else
+        {
             i = 0;
-
+        }
         /* Buffer remaining input */
         memcpy((POINTER)&context.buffer[index], (POINTER)&input[i], inputLen - i);
     }
@@ -296,7 +305,7 @@ public:
     void Final()
     {
         unsigned char bits[8];
-        unsigned int index, padLen;
+        size_t index, padLen;
 
         // Save number of bits
         Encode(bits, context.count, 8);
@@ -321,7 +330,7 @@ public:
     /// Buffer must be 32+1 (nul) = 33 chars long at least 
     void writeToString()
     {
-        int pos;
+        size_t pos;
 
         for(pos = 0; pos < 16; pos++)
             sprintf_s(digestChars + (pos * 2), sizeof(digestChars + (pos * 2)), "%02x", digestRaw[pos]);
@@ -334,7 +343,7 @@ public:
 
     // This version of the digest is actually
     // a "printf'd" version of the digest.
-    char digestChars[33];
+    char digestChars[64];
 
     /// Load a file from disk and digest it
     // Digests a file and returns the result.
@@ -362,7 +371,7 @@ public:
     }
 
     /// Digests a byte-array already in memory
-    char* digestMemory(BYTE *memchunk, int len)
+    char* digestMemory(BYTE *memchunk, size_t len)
     {
         Init();
         Update(memchunk, len);
