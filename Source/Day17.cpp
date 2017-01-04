@@ -64,11 +64,8 @@ void Run<Day17>(Part part, istream& is, ostream& os)
         string bestPath = goalPaths.front();
         for(const string path : goalPaths)
         {
-            if(part == Part01 && path.size() < bestPath.size())
-            {
-                bestPath = path;
-            }
-            else if(part == Part02 && path.size() > bestPath.size())
+            if( (part == Part01 && path.size() < bestPath.size()) ||
+                (part == Part02 && path.size() > bestPath.size()) )
             {
                 bestPath = path;
             }
