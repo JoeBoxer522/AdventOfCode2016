@@ -1,15 +1,10 @@
 #include "Days.h"
 #include <regex>
+#include <map>
+#include <queue>
 #include <vector>
 
-static int dist(int x1, int x2, int y1, int y2)
-{
-    return (abs(x1 - x2) + abs(y1 - y2));
-}
-static int dist(pair<int,int> p1, pair<int,int> p2)
-{
-    return dist(p1.first, p2.first, p1.second, p2.second);
-}
+const int LARGE_DATA = 100;
 
 struct Node
 {
@@ -28,7 +23,7 @@ struct Node
     bool CanMove(const Node& n2) const { return(dataUsed > 0 && dataUsed <= n2.DataAvail()); }
     void Print(ostream& os) const
     {
-        if(dataUsed > 100)
+        if(dataUsed > LARGE_DATA)
         {
             os << "#";
         }
@@ -43,6 +38,55 @@ struct Node
         os << " ";
     }
 };
+
+bool IsDataPosValid(const pair<int,int>& p, const vector<vector<Node>>& nodes)
+{
+    int x = p.first;
+    int y = p.second;
+    if(x >= 0 && y >= 0 && x < nodes.size() && y < nodes[x].size())
+    {
+        return (nodes[x][y].dataUsed < LARGE_DATA);
+    }
+    return(false);
+}
+
+int GetDist(const pair<int,int>& START, const pair<int,int>& GOAL, const vector<vector<Node>>& nodes)
+{
+    const vector<pair<int,int>> DIRS({make_pair(0,-1), {0,1}, {-1,0}, {1,0}});
+    
+    // Queue of points to visit
+    queue<pair<int, int>> pointsQueue = queue<pair<int, int>>();
+    pointsQueue.push(START);
+
+    // Map of points visited and the distance from start to that point
+    map<pair<int, int>, int> pointPathMap = map<pair<int, int>, int>();
+    pointPathMap.emplace(START, 0);
+
+    while(!pointsQueue.empty() && pointPathMap.find(GOAL) == pointPathMap.end())
+    {
+        const pair<int, int>& pointCur = pointsQueue.front();
+        for(const pair<int, int>& dir : DIRS)
+        {
+            const pair<int, int> pointNext = make_pair(pointCur.first + dir.first, pointCur.second + dir.second);
+            if(IsDataPosValid(pointNext, nodes) && pointPathMap.find(pointNext) == pointPathMap.end())
+            {
+                pointsQueue.push(pointNext);
+                const int searchDist = pointPathMap[pointCur];
+                pointPathMap.emplace(pointNext, searchDist + 1);
+            }
+        }
+        pointsQueue.pop();
+    }
+
+    if(pointPathMap.find(GOAL) != pointPathMap.end())
+    {
+        return pointPathMap[GOAL];
+    }
+    else
+    {
+        return -1;
+    }
+}
 
 template <>
 void Run<Day22>(Part part, istream& is, ostream& os)
@@ -94,16 +138,12 @@ void Run<Day22>(Part part, istream& is, ostream& os)
         os << "Total possible pairings: " << numPairs << endl;
     }
     else if(part == Part02)
-    {
-        // Takes 5 moves to transition goal data from one node to an adjacent (assuming capacity is available)
-        const int MOVE_COST = 5;
-
-        int distGoalEmpty = int(1e9);
-        
-        pair<int, int> pStart = make_pair(0, 0);
-        pair<int, int> pGoal = make_pair(0, int(WIDTH - 1));
+    {        
+        const pair<int, int> pStart = make_pair(0, 0);
+        const pair<int, int> pGoal = make_pair(0, int(WIDTH - 1));
 
         // Find empty data node closest to goal
+        int distGoalEmpty = int(1e9);
         for(int x = 0; x < nodes.size(); ++x)
         {
             for(int y = 0; y < nodes[x].size(); ++y)
@@ -111,7 +151,7 @@ void Run<Day22>(Part part, istream& is, ostream& os)
                 nodes[x][y].Print(os);
                 if(nodes[x][y].dataUsed == 0)
                 {
-                    int emptyDist = dist(pGoal.first, x, pGoal.second, y);
+                    int emptyDist = GetDist(pGoal, make_pair(x, y), nodes);
                     if(emptyDist < distGoalEmpty)
                     {
                         distGoalEmpty = emptyDist;
@@ -121,12 +161,12 @@ void Run<Day22>(Part part, istream& is, ostream& os)
             os << endl;
         }
 
-        // distGoalEmpty = 58
-        // distGoalStart = 28
-        // Both of these need to case for hitting 'walls'
-        // A* ?
-        int distGoalStart = dist(pStart, pGoal) - 1;
-        int totalMoves = (distGoalStart * MOVE_COST) + distGoalEmpty;
+        // Takes 5 moves to transition goal data from one node to an adjacent (assuming capacity is available)
+        const int MOVE_COST = 5;
+
+        // Calculate distance to move empty slot near goal + distance to move goal data to start
+        int distGoalStart = GetDist(pStart, pGoal, nodes) - 1;
+        int totalMoves = distGoalEmpty + (distGoalStart * MOVE_COST);
         os << "Shortest path takes " << totalMoves << " moves" << endl;
     }
 }
