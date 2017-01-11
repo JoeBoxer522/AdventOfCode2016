@@ -12,11 +12,12 @@ void Run<Day25>(Part part, istream& is, ostream& os)
 
         // Loop until a sufficient pattern is found
         int patternCount = 0;
-        int valTest = 0;
+        int initVal = 0;
         while(patternCount < MAX_PATTERN)
         {
             int sigExpected = 0;
-            dataMap[REG_TEST] = valTest;
+            dataMap[REG_TEST] = initVal;
+
             is.clear();
             is.seekg(0, ios::beg);
             vector<Instruction> instructions = Instruction::GetInstructions(is);
@@ -38,13 +39,13 @@ void Run<Day25>(Part part, istream& is, ostream& os)
                         patternCount = 0;
                         dataMap.clear();
                         instructions.clear();
-                        ++valTest;
+                        ++initVal;
                         break;
                     }
                 }
             }
         }
 
-        os << "Best starting val for register " << REG_TEST << ": " << valTest << endl;
+        os << "Lowest initial val for register " << REG_TEST << ": " << initVal << endl;
     }
 }
