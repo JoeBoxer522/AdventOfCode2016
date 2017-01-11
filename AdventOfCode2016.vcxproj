@@ -149,6 +149,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Headers\AdventTimer.h" />
+    <ClInclude Include="Headers\AssemBunny.h" />
     <ClInclude Include="Headers\Days.h" />
     <ClInclude Include="Headers\AdventMath.h" />
     <ClInclude Include="Headers\MD5.h" />
