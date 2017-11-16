@@ -12,7 +12,7 @@ static const char CHAR_TRAP = '^';
 
 bool IsTrap(int idx, const string& s)
 {
-    if(idx >= 0 && idx < s.size())
+    if(idx >= 0 && idx < static_cast<int>(s.size()))
     {
         return s[idx] == CHAR_TRAP;
     }
@@ -30,7 +30,7 @@ void Run<Day18>(Part part, istream& is, ostream& os)
     while(numRows > 0)
     {
         string rowNext = string();
-        for(int i = 0; i<rowCur.size(); ++i)
+        for(int i = 0; i<static_cast<int>(rowCur.size()); ++i)
         {
             if(rowCur[i] == CHAR_SAFE) { safeTiles++; }
 

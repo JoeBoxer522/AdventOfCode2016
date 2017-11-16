@@ -23,7 +23,7 @@ private:
 // Check if the discs are aligned (at position 0) when button is pressed for timestamp 't'
 bool AreDiscsAligned(vector<Disc>& discs, int t)
 {
-    for(int i = 0; i < discs.size(); ++i)
+    for(int i = 0; i < static_cast<int>(discs.size()); ++i)
     {
         const Disc& d = discs[i];
         const int discNum = i + 1;
@@ -48,7 +48,7 @@ void Run<Day15>(Part part, istream& is, ostream& os)
         if(regex_match(arg, match, RX_DISC))
         {
             int discNum = stoi(match.str(1));
-            if(discs.size() < discNum)
+            if(static_cast<int>(discs.size()) < discNum)
             {
                 discs.resize(discNum);
             }

@@ -44,9 +44,9 @@ struct FloorData
     {
         os << "F" << floorNum << " ";
         os << (hasElevator ? " E " : " . ");
-        for(int i=0; i<max(maxChips, maxGens); ++i)
+        for(int i=0; i<static_cast<int>(max(maxChips, maxGens)); ++i)
         {
-            if(gens.size() > i)
+            if(static_cast<int>(gens.size()) > i)
             {
                 os << " " << gens[i] << "G";
             }
@@ -54,7 +54,7 @@ struct FloorData
             {
                 os << " . ";
             }
-            if(chips.size() > i)
+            if(static_cast<int>(chips.size()) > i)
             {
                 os << " " << chips[i] << "M";
             }

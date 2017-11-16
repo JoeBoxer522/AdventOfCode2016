@@ -43,7 +43,7 @@ bool IsDataPosValid(const pair<int,int>& p, const vector<vector<Node>>& nodes)
 {
     int x = p.first;
     int y = p.second;
-    if(x >= 0 && y >= 0 && x < nodes.size() && y < nodes[x].size())
+    if(x >= 0 && y >= 0 && x < static_cast<int>(nodes.size()) && y < static_cast<int>(nodes[x].size()))
     {
         return (nodes[x][y].dataUsed < LARGE_DATA);
     }
@@ -103,11 +103,11 @@ void Run<Day22>(Part part, istream& is, ostream& os)
         {
             int x = stoi(match.str(1));
             int y = stoi(match.str(2));
-            if(nodes.size() <= y) // num rows
+            if(static_cast<int>(nodes.size()) <= y) // num rows
             {
                 nodes.push_back(vector<Node>());
             }
-            if(nodes[y].size() <= x) // num cols
+            if(static_cast<int>(nodes[y].size()) <= x) // num cols
             {
                 nodes[y].resize(x+1);
             }
@@ -122,10 +122,10 @@ void Run<Day22>(Part part, istream& is, ostream& os)
     if(part == Part01)
     {
         size_t numPairs = 0;
-        for(int i = 0; i < SQUARE; ++i)
+        for(unsigned int i = 0; i < SQUARE; ++i)
         {
             const Node& n1 = nodes[i / WIDTH][i - (WIDTH * (i / WIDTH))];
-            for(int j = 0; j < SQUARE; ++j)
+            for(unsigned int j = 0; j < SQUARE; ++j)
             {
                 const Node& n2 = nodes[j / WIDTH][j - (WIDTH * (j / WIDTH))];
                 if(i != j && n1.CanMove(n2))
@@ -144,9 +144,9 @@ void Run<Day22>(Part part, istream& is, ostream& os)
 
         // Find empty data node closest to goal
         int distGoalEmpty = int(1e9);
-        for(int x = 0; x < nodes.size(); ++x)
+        for(int x = 0; x < static_cast<int>(nodes.size()); ++x)
         {
-            for(int y = 0; y < nodes[x].size(); ++y)
+            for(int y = 0; y < static_cast<int>(nodes[x].size()); ++y)
             {
                 nodes[x][y].Print(os);
                 if(nodes[x][y].dataUsed == 0)

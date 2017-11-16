@@ -27,7 +27,7 @@ bool IsDataPosValid(const pair<int, int>& p, const vector<vector<char>>& nodes)
 {
     int x = p.first;
     int y = p.second;
-    if(x >= 0 && y >= 0 && x < nodes.size() && y < nodes[x].size())
+    if(x >= 0 && y >= 0 && x < static_cast<int>(nodes.size()) && y < static_cast<int>(nodes[x].size()))
     {
         // Within range and a valid spot
         return(isdigit(nodes[x][y]) || nodes[x][y] == '.');
@@ -107,7 +107,7 @@ int TSM_Brute(vector<Room> rooms, const vector<vector<char>>& nodes, string& bes
     {
         string path = string() + rooms[0].name;
         int dist = 0;
-        for(int i=1; i < rooms.size(); ++i)
+        for(int i=1; i < static_cast<int>(rooms.size()); ++i)
         {
             string roomPath = string() + rooms[i-1].name + rooms[i].name;
             dist += pathDistMap[roomPath];
@@ -177,7 +177,7 @@ void Run<Day24>(Part part, istream& is, ostream& os)
     while(getline(is, arg))
     {
         nodes.push_back(vector<char>()); // num rows
-        for(int x = 0; x < arg.length(); ++x)
+        for(int x = 0; x < static_cast<int>(arg.length()); ++x)
         {
             char c = arg[x];
             if(isdigit(c))
@@ -192,7 +192,7 @@ void Run<Day24>(Part part, istream& is, ostream& os)
                     rooms.push_back(room);
                 }
             }
-            if(nodes[y].size() <= x) // num cols
+            if(static_cast<int>(nodes[y].size()) <= x) // num cols
             {
                 nodes[y].resize(x + 1);
             }
